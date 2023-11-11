@@ -10,6 +10,8 @@ export class DrawingHandler {
     return isVisible;
   }
 
+  static elevatorDialog;
+
   static executeStairs(updates, token) {
     
     if ("x" in updates || "y" in updates) {
@@ -72,11 +74,8 @@ export class DrawingHandler {
         }
       }
       token.inStair = inStair;
-      if (!inStair) {
-        $("#levels-elevator")
-          .closest(".app")
-          .find(`a[class="header-button close"]`)
-          .click();
+      if (!inStair && this.elevatorDialog) {
+        this.elevatorDialog.close();
       }
       if (newUpdates) {
         const animation = canvas.tokens.get(token.id)?._animation;
@@ -131,7 +130,7 @@ export class DrawingHandler {
     });
     content += `<hr></div>`;
 
-    let dialog = new Dialog({
+    this.elevatorDialog = new Dialog({
       title: game.i18n.localize("levels.dialog.elevator.title"),
       content: content,
       buttons: {
@@ -143,7 +142,7 @@ export class DrawingHandler {
       default: "close",
       close: () => {},
     });
-    await dialog._render(true);
+    await this.elevatorDialog._render(true);
     let renderedFrom = $("body").find(`div[id="levels-elevator"]`);
     for (let btn of $(renderedFrom).find("button")) {
       $(btn).on("click", updateElev);
