@@ -58,13 +58,16 @@ export class DrawingHandler {
               }
             } else if (stair.drawingMode == 3) {
               if (tokenElev <= stair.range[1] && tokenElev >= stair.range[0]) {
-                CONFIG.Levels.handlers.DrawingHandler.renderElevatorDalog(
-                  stair.drawing.document.getFlag(
-                    CONFIG.Levels.MODULE_ID,
-                    "elevatorFloors"
-                  ),
-                  token
-                );
+                
+                const animation = canvas.tokens.get(token.id)?._animation;
+                if (animation) 
+                {
+                  animation.then(() => CONFIG.Levels.handlers.DrawingHandler.renderElevatorDalog(stair.drawing.document.getFlag(CONFIG.Levels.MODULE_ID, "elevatorFloors"), token));
+                } 
+                else 
+                {
+                  CONFIG.Levels.handlers.DrawingHandler.renderElevatorDalog(stair.drawing.document.getFlag(CONFIG.Levels.MODULE_ID, "elevatorFloors"), token);
+                }
                 inStair = stair.drawing.id;
               }
             }
