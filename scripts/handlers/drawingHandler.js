@@ -154,6 +154,7 @@ export class DrawingHandler {
       let newElev = parseFloat(event.target.id);
       if (newElev || newElev == 0)
         canvas.tokens.controlled[0]?.document?.update({ elevation: newElev });
+      DrawingHandler.elevatorDialog.close();
     }
   }
 
